@@ -80,8 +80,8 @@ User Query
 ---
 
 ## Project Structure
-MiniLM_Chatbox/
 
+MiniLM_Chatbox/
 ├── app/
 │ ├── streamlit_app.py
 │ └── api_server.py
@@ -136,7 +136,6 @@ MiniLM_Chatbox/
 │
 ├── requirements.txt
 └── README.md
-
 ---
 
 ## Installation
