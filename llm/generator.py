@@ -93,11 +93,11 @@ class Generator:
         if len(words) < 5:
             return self.fallback
 
-        # ===== Soft citation check (FIX QUAN TRỌNG) =====
-        citations = re.findall(r"\[\d+\]", response)
+        # # ===== Soft citation check (FIX QUAN TRỌNG) =====
+        # citations = re.findall(r"\[\d+\]", response)
 
-        if not citations:
-            response += "\n\n(Note: This answer is for reference and may not be fully accurate.)"
+        # if not citations:
+        #     response += "\n\n(Note: This answer is for reference and may not be fully accurate.)"
 
         # ===== Limit length =====
         # if len(words) > 120:
