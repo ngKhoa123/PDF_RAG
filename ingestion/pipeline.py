@@ -78,29 +78,14 @@ class IngestionPipeline:
                     print("[WARNING] No chunks created")
                 continue
 
-            # ===== FINAL FILTER =====
-            clean_chunks = []
-            for c in chunks:
-                text = (c.page_content or "").strip().lower()
-
-                if "provided proper attribution" in text:
-                    continue
-
-                if "all rights reserved" in text:
-                    continue
-
-                if "attention is all you need" in text and len(text) < 500:
-                    continue
-
-                if len(text) < 50:
-                    continue
-
-                clean_chunks.append(c)
-
-            if self.verbose:
-                print(f"[PIPELINE] Clean chunks: {len(clean_chunks)}")
-
-            all_chunks.extend(clean_chunks)
+           # ===== FINAL FILTER =====
+        # Cleaning đã được xử lý trong DocumentLoader._clean_text()
+        
+        clean_chunks = chunks
+        if self.verbose:
+            print(f"[PIPELINE] Clean chunks: {len(clean_chunks)}")
+        
+        all_chunks.extend(clean_chunks)
 
         # ===== DEDUP =====
         all_chunks = deduplicate_chunks(all_chunks)
