@@ -71,20 +71,54 @@ class DocumentLoader:
     # CLEAN TEXT
     # =========================
     def _clean_text(self, text: str) -> str:
+        if not text:
+            return ""
+    
+        # normalize lowercase
         lower = text.lower()
-
-        if "provided proper attribution" in lower:
+    
+        # =========================
+        # REMOVE COMMON NOISE
+        # =========================
+        noise_patterns = [
+            r"\ball rights reserved\b",
+            r"\bprovided proper attribution\b",
+            r"\bproceedings of\b",
+            r"\bcopyright\b",
+            r"\bconference\b",
+        ]
+    
+        for pattern in noise_patterns:
+            if re.search(pattern, lower):
+                return ""
+    
+        # =========================
+        # REMOVE REFERENCE BLOCKS
+        # =========================
+        if re.fullmatch(r"\s*references\s*", lower):
             return ""
-
-        if "attention is all you need" in lower and len(text) < 500:
+    
+        # =========================
+        # HIGH CITATION DENSITY
+        # =========================
+        citations = re.findall(r"\[\d+\]", text)
+    
+        if len(citations) > 5:
             return ""
-
-        if "references" in lower:
+    
+        # =========================
+        # TOO SHORT / LOW INFO
+        # =========================
+        word_count = len(text.split())
+    
+        if word_count < 5:
             return ""
-
-        # normalize whitespace
+    
+        # =========================
+        # NORMALIZE WHITESPACE
+        # =========================
         text = re.sub(r"\s+", " ", text)
-
+    
         return text.strip()
 
     # =========================
