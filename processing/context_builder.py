@@ -66,23 +66,33 @@ class ContextBuilder:
     # NOISE FILTER (CRITICAL)
     # =========================
     def _is_noise(self, text: str) -> bool:
-
-        if any(k in text for k in [
-            "government", "voting", "election", "law"
-        ]):
+        lower = text.lower()
+    
+        # ===== reference headers =====
+        if re.fullmatch(r"\s*(references|appendix|bibliography)\s*", lower):
             return True
-
-        if re.search(r"\[\d+\]", text) and len(text) < 120:
+    
+        # ===== high citation density =====
+        citations = re.findall(r"\[\d+\]", text)
+    
+        if len(citations) > 5:
             return True
-
-        if "et al." in text and "we propose" not in text:
+    
+        # ===== common boilerplate =====
+        boilerplate_patterns = [
+            r"\ball rights reserved\b",
+            r"\bcopyright\b",
+            r"\bproceedings of\b",
+        ]
+    
+        for pattern in boilerplate_patterns:
+            if re.search(pattern, lower):
+                return True
+    
+        # ===== too short =====
+        if len(text.split()) < 5:
             return True
-        
-        if any(k in text for k in [
-            "references", "appendix", "copyright"
-        ]):
-            return True
-
+    
         return False
 
     # =========================
