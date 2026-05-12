@@ -79,13 +79,13 @@ class IngestionPipeline:
                 continue
 
            # ===== FINAL FILTER =====
-        # Cleaning đã được xử lý trong DocumentLoader._clean_text()
-        
-        clean_chunks = chunks
-        if self.verbose:
-            print(f"[PIPELINE] Clean chunks: {len(clean_chunks)}")
-        
-        all_chunks.extend(clean_chunks)
+            # Cleaning đã được xử lý trong DocumentLoader._clean_text()
+            
+            clean_chunks = chunks
+            if self.verbose:
+                print(f"[PIPELINE] Clean chunks: {len(clean_chunks)}")
+            
+            all_chunks.extend(clean_chunks)
 
         # ===== DEDUP =====
         all_chunks = deduplicate_chunks(all_chunks)
